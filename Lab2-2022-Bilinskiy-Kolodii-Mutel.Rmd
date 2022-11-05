@@ -88,7 +88,7 @@ Next, generate the messages
 message_generator <- function(N) {
   matrix(sample(c(0,1), 4*N, replace = TRUE), nrow = N)
 }  
-N <- 1000
+N <- 5000
 messages <- message_generator(N)
 codewords <- (messages %*% G) %% 2
 messages[(1:5),]
@@ -143,9 +143,25 @@ cat("Estimated p* (^p) = \n")
 p_hat
 ```
 
-**Law of Large Numbers** explains why our $\hat p$ converges to hypothetical $p^*$. Since we performed our experiment large enough amount of times ($N \ge 1000$) the estimate probability to receive a message correctly indeed tends to be equal to the actual probability (i.e. $|p^* - \hat{p}|\le0.01$)
+### Convergence of Empirical Probability to Hypothetical
 
-The histogram of the number k = 0,1,2,3,4 of errors while transmitting a 4-digit binary message
+**Law of Large Numbers** explains why our $\hat p$ converges to hypothetical $p^*$. Since we performed our experiment large enough amount of times ($N = 5000$) the estimate probability to receive a message correctly indeed tends to be equal to the actual probability (in our case $|p^* - \hat{p}|=0.003$)
+
+### Confidence Interval
+
+To find the confidence interval, we have to find standard deviation of our indicator rv:
+
+$$\sigma^2=0.825(1-0.825)^2+0.175(0-0.825)^2=0.144375$$
+
+From which the standard deviation is $\approx 0.38$.
+
+By CLT we know that $Z=\frac{\sqrt{N}}{\sigma}(\hat{p}-p^*)=\frac{\sqrt{N}}{0.38}(\hat{p}-0.825)$ is a standard normal rv. Therefore
+
+$$P(p^*-\epsilon < \hat{p}<p^*+\epsilon)=P(-\epsilon<\hat{p}-p^*<\epsilon)=P(\frac{-\epsilon\sqrt{N}}{0.38}<\frac{-\epsilon\sqrt{N}}{0.38}(\hat{p}-p^*)<\frac{\epsilon\sqrt{N}}{0.38})=\\=\Phi(\frac{\epsilon\sqrt{N}}{0.38})-\Phi(\frac{-\epsilon\sqrt{N}}{0.38})=2\Phi(\frac{\epsilon\sqrt{N}}{0.38})-1=0.95$$Using [Standard normal table](https://en.wikipedia.org/wiki/Standard_normal_table), we can derive that $\frac{\epsilon\sqrt{N}}{0.38}=1.96$ Therefore:$$\epsilon=\frac{0.7448}{\sqrt{N}}$$
+
+Which is equal to $\approx 0.024$ for $N=1000$ and $\approx 0.0074$ for $N=10000$ To guarantee that $\epsilon \le 0.03$ the following inequality has to hol $$N \ge (\frac{0.7448}{0.03})^2 \ge 625$$
+
+### Histogram of Error Amount
 
 ```{r}
 ident <- decoded!=messages
@@ -157,7 +173,7 @@ hist(x=ident,
      ylab="Probability")
 ```
 
-1,2,3 and 4 errors seem to be binomially distributed, however because of the option "0", the distribution does not look exactly like binomial.
+1,2,3 and 4 errors seem to be binomially distributed, however because of the option "0" and because we are able to fix one corruption, the distribution is not in fact binomial.
 
 ## Task 2 (Kvitoslava Kolodii)
 
