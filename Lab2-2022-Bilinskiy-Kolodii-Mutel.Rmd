@@ -211,6 +211,6 @@ curve(pnorm(x, mean = mu, sd = sigma), col = "red", lwd = 2, add = TRUE)
 
 **Do not forget to include several sentences summarizing your work and the conclusions you have made!**
 
-### General summary and conclusions
+## General summary and conclusions
 
 Summarize here what you've done, whether you solved the tasks, what difficulties you had etc
