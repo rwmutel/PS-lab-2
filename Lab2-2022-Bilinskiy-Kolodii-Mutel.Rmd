@@ -181,17 +181,26 @@ One of the devices to measure radioactivity level at a given location is the Gei
 **First, generate samples an sample means:**
 
 ```{r}
-nu1 <- 1  # change this!
+nu1 <- 10 + id  # change this!
 K <- 1e3
-n <- 5
-sample_means <- colMeans(matrix(rexp(n*K, rate = nu1), nrow=n))
+n <- 10
+sample_means <- colSums(matrix(rexp(n*K, rate = 1/nu1), nrow=n))
+
 ```
+
+r
 
 **Next, calculate the parameters of the standard normal approximation**
 
 ```{r}
-mu <- 0       # change this!
-sigma <- 1    # change this!
+mu <- n*nu1    # change this!
+sigma <- sqrt(n)*nu1    # change this!
+
+```
+
+```{r}
+
+
 ```
 
 **We can now plot ecdf and cdf**
