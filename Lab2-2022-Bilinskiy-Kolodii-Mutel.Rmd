@@ -95,7 +95,7 @@ messages[(1:5),]
 codewords[(1:5),]
 ```
 
-Generate random errors; do not forget that they occur with probability $p=\frac{11}{100}$! Next, generate the received messages
+Generate random errors; do not forget that they occur with probability $p$! Next, generate the received messages
 
 ```{r}
 # generate "masks" for our encoded messages
@@ -113,22 +113,19 @@ received[(1:5),]
 
 The next steps include detecting the errors in the received messages, correcting them, and then decoding the obtained messages. After this, you can continue with calculating all the quantities of interest
 
-Let $p^*$ be the probability that a message is transmitted correctly. Recall, that a message is 4 bits of information and 3 bits to check the correctness of the message. Every bit is corrupted with probability $p=\frac{11}{100}\approx0.89$. Therefore, our $p^*$ is the probability that there were zero corruption in the all the bits or there were only one corruption among them.
-
-$p = (1-p)^7 + {7\choose 1}(1-p)^6p^1=(\frac{89}{100})^7 + 7\cdot(\frac{89}{100})^6*(\frac{11}{100})=0.824988943$
-
 ```{r}
 decode <- function(r) {
   z <- r %*% H
   z <- z %% 2
-  index <- z[1,1] + 2 * z[1,2] + 4 * z[1,3]
-  if (index > 0) {
+  if (!identical(z[1,],c(0,0,0))) {
+    index <- z[1,1] + 2 * z[1,2] + 4 * z[1,3]
     r[index] <- (r[index] + 1) %% 2
   }
   return(c(r[3],r[5],r[6],r[7]))
 }
-decoded <- t(apply(received, 1, decode))
+decoded <- t(apply(received, 1, decode))[(1:5),]
 cat("decoded: \n")
+<<<<<<< HEAD
 decoded[(1:5),]
 cat("original: \n")
 messages[(1:5),]
@@ -187,8 +184,8 @@ Assume that a medical laboratory receives $n$ samples of radioactive element ${{
 2.  Show that the distribution of the sample means of $X_1,\dots,X_n$ gets very close to a normal one as $n$ becomes large and identify that normal distribution. To this end,
     -   simulate the realization $x_1,x_2,\dots,x_n$ of the $X_i$ and calculate the sample mean $s=\overline{\mathbf{x}}$;
     -   repeat this $K$ times to get the sample $\mathbf{s}=(s_1,\dots,s_K)$ of means and form the empirical cumulative distribution function $\hat F_{\mathbf{s}}$ of $\mathbf{s}$;
-    -   identify $\mu$ and $\sigma^2$ such that the $\textbf{c.d.f.}$ $F$ of $\mathscr{N}(\mu,\sigma^2)$ is close to the $\textbf{e.c.d.f.}$ $\hat F_{\mathbf{s}}$ and plot both **c.d.f.**'s on one graph to visualize their proximity (use the proper scales!);
-    -   calculate the maximal difference between the two $\textbf{c.d.f.}$'s;
+    -   identify $\mu$ and $\sigma^2$ such that the \textbf{c.d.f.} $F$ of $\mathscr{N}(\mu,\sigma^2)$ is close to the \textbf{e.c.d.f.} $\hat F_{\mathbf{s}}$ and plot both **c.d.f.**'s on one graph to visualize their proximity (use the proper scales!);
+    -   calculate the maximal difference between the two \textbf{c.d.f.}'s;
     -   consider cases $n = 5$, $n = 10$, $n=50$ and comment on the results.\
 3.  Calculate the largest possible value of $n$, for which the total number of decays in one second is less than $8 \times 10^8$ with probability at least $0.95$. To this end,
     -   obtain the theoretical bound on $n$ using Markov inequality, Chernoff bound and Central Limit Theorem, and compare the results;\
@@ -252,7 +249,7 @@ One of the devices to measure radioactivity level at a given location is the Gei
 **First, generate samples an sample means:**
 
 ```{r}
-nu1 <- 10 + id  # change this!
+nu1 <- 10 + id
 K <- 1e3
 n <- 10
 sample_means <- colSums(matrix(rexp(n*K, rate = 1/nu1), nrow=n))
@@ -264,13 +261,18 @@ r
 **Next, calculate the parameters of the standard normal approximation**
 
 ```{r}
-mu <- n*nu1    # change this!
-sigma <- sqrt(n)*nu1    # change this!
+mu <- n*nu1
+sigma <- sqrt(n)*nu1  
 
 ```
 
 ```{r}
 
+
+#Finding max error for n = 10
+
+x <- seq(0,500,by=.01)
+max(abs(ecdf(sample_means)(x)-pnorm(x,mean = mu, sd = sigma)))
 
 ```
 
@@ -287,13 +289,57 @@ plot(Fs,
 curve(pnorm(x, mean = mu, sd = sigma), col = "red", lwd = 2, add = TRUE)
 ```
 
-**Next, proceed with all the remaining steps**
+```{r}
+max_error = function(n){
+  nu1 <- 10 + id
+  K <- 1e3
+  sample_means <- colSums(matrix(rexp(n*K, rate = 1/nu1), nrow=n))
+  mu <- n*nu1
+  sigma <- sqrt(n)*nu1
+  x <- seq(0,500,by=.01)
+  return(max(abs(ecdf(sample_means)(x)-pnorm(x,mean = mu, sd = sigma))))
+}
 
-**Do not forget to include several sentences summarizing your work and the conclusions you have made!**
+```
 
-## General summary and conclusions
+```{r}
+visualize = function(n){
+  nu1 <- 10 + id
+  K <- 1e3
+  sample_means <- colSums(matrix(rexp(n*K, rate = 1/nu1), nrow=n))
+  mu <- n*nu1
+  sigma <- sqrt(n)*nu1
+  xlims <- c(mu-3*sigma,mu+3*sigma)
+  Fs <- ecdf(sample_means)
+  plot(Fs, 
+       xlim = xlims, 
+       col = "blue",
+       lwd = 2,
+       main = "Comparison of ecdf and cdf")
+  curve(pnorm(x, mean = mu, sd = sigma), col = "red", lwd = 2, add = TRUE)
+}
 
-Summarize here what you've done, whether you solved the tasks, what difficulties you had etc
+```
+
+```{r}
+
+visualize(5)
+```
+
+```{r}
+max_error(5)
+
+```
+
+```{r}
+
+visualize(50)
+```
+
+```{r}
+max_error(50)
+
+```
 
 **Next, proceed with all the remaining steps**
 
