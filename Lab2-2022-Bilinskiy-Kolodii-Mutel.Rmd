@@ -88,7 +88,7 @@ Next, generate the messages
 message_generator <- function(N) {
   matrix(sample(c(0,1), 4*N, replace = TRUE), nrow = N)
 }  
-N <- 10000
+N <- 1000
 messages <- message_generator(N)
 codewords <- (messages %*% G) %% 2
 messages[(1:5),]
@@ -134,7 +134,7 @@ cat("original: \n")
 messages[(1:5),]
 
 p_hat <- sum(
-  decoded[,1]==messages[,1] & 
+  decoded[,1]==messages[,1]& 
   decoded[,2]==messages[,2]&
   decoded[,3]==messages[,3]&
   decoded[,4]==messages[,4]
@@ -142,6 +142,22 @@ p_hat <- sum(
 cat("Estimated p* (^p) = \n")
 p_hat
 ```
+
+**Law of Large Numbers** explains why our $\hat p$ converges to hypothetical $p^*$. Since we performed our experiment large enough amount of times ($N \ge 1000$) the estimate probability to receive a message correctly indeed tends to be equal to the actual probability (i.e. $|p^* - \hat{p}|\le0.01$)
+
+The histogram of the number k = 0,1,2,3,4 of errors while transmitting a 4-digit binary message
+
+```{r}
+ident <- decoded!=messages
+ident <- apply(ident, 1, sum)
+hist(x=ident,
+     freq=FALSE, 
+     main="The Amount of Corrupted Bits",
+     xlab="Corruptions",
+     ylab="Probability")
+```
+
+1,2,3 and 4 errors seem to be binomially distributed, however because of the option "0", the distribution does not look exactly like binomial.
 
 ## Task 2 (Kvitoslava Kolodii)
 
