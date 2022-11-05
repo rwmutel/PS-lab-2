@@ -1,6 +1,6 @@
 ---
 title: 'P&S-2022: Lab assignment 2'
-author: "Name1, Name2, Name3"
+author: "Bilinskiy, Kolodii, Mutel"
 output:
   html_document:
     df_print: paged
@@ -62,10 +62,8 @@ output:
 #### First, we set the **id** of the team and define the probability \(p\) and the generator and parity-check matrices \(G\) and \(H\)
 
 ```{r}
-# your team id number 
-                          ###
-id <- 50                  ### Change to the correct id!
-                          ###
+
+id <- 11
 set.seed(id)
 p <- id/100
 # matrices G and H
