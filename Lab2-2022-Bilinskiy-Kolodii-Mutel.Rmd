@@ -418,7 +418,13 @@ Mx(t) for Normal distribution =
 
 ![](images/paste-A8AB398A.png){width="282"}
 
-P(S \>= 60) \<= min(e^(-60s)^ \* e^(2100\*t/N\ +\ 50\*(21/N)\^2\ \*\ t\*t)^ ) for s\>0
+P(S \>= 60) \<= min(e^(-60t)^ \* e^(2100\*t/N\ +\ 50\*(21/N)\^2\ \*\ t\*t)^ ) for t\>0
+
+after mininizing t = (60N^2^ -2100N)/2\*22050
+
+0.95 \<= e^(-60t)^ \* e^(2100\*t/N\ +\ 50\*(21/N)\^2\ \*\ t\*t)^
+
+after calculations N \<= 36.121 =\> N max = 36
 
 ```{r}
 
