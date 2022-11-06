@@ -327,11 +327,13 @@ $$
 
 Therefore:
 
-$$P(\frac{S_{n}-n\mu}{\sigma\sqrt{n}}< \frac{8e8-n\mu}{\sigma\sqrt{n}}) \rightarrow \phi(\frac{8e8-n\mu}{\sigma\sqrt{n}})\geq .95$$
+$$P(\frac{S_{n}-n\mu}{\sigma\sqrt{n}}< \frac{8e8-n\mu}{\sigma\sqrt{n}}) \rightarrow \Phi(\frac{8e8-n\mu}{\sigma\sqrt{n}})\geq .95$$
 
 Using [Standard normal table](https://en.wikipedia.org/wiki/Standard_normal_table), we can derive that $\frac{8e8-n\mu}{\sigma\sqrt{n}} = 1.65$, then:
 
-![![](images/%D0%97%D0%BD%D1%96%D0%BC%D0%BE%D0%BA%20%D0%B5%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202022-11-06%20%D0%BE%2015.56.43.png){width="299"}](images/%D0%97%D0%BD%D1%96%D0%BC%D0%BE%D0%BA%20%D0%B5%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202022-11-06%20%D0%BE%2015.56.27.png){width="299"}
+![](images/%D0%97%D0%BD%D1%96%D0%BC%D0%BE%D0%BA%20%D0%B5%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202022-11-06%20%D0%BE%2015.56.43.png){width="299"}
+
+![](images/%D0%97%D0%BD%D1%96%D0%BC%D0%BE%D0%BA%20%D0%B5%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202022-11-06%20%D0%BE%2015.56.27.png){width="299"}
 
 ![](images/%D0%97%D0%BD%D1%96%D0%BC%D0%BE%D0%BA%20%D0%B5%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202022-11-06%20%D0%BE%2015.56.48.png){width="137"}
 
@@ -525,4 +527,4 @@ The sum of differences in time of 100 clicks in 95% of cases for $N=36 = 67 sec$
 
 ## General summary and conclusions
 
-Summarize here what you've done, whether you solved the tasks, what difficulties you had etc
+During implementation of the tasks of lab assignment 2, we used theoretical knowledge of random variables and limit theorems in a practical way. A lot of randomised processes in real life could be described as random variables, while analysing their properties could lead to interesting results. Limit theorems are a powerful tool to predict the empirical observations, and are useful for making some assumptions about the experiment.
