@@ -206,26 +206,6 @@ difference_n3
 ```
 
 ```{r}
-markov_bound <- function(a) {
-  bound <- mu/a
-  return (bound)
-}
-res <- markov_bound(8*(10^8))
-res
-# ?ppois
-```
-
-```{r}
-chernoff_bound <- function(a, n, t=1) {
-  x <- seq(min(means), max(means),by = .01)
-  bound <- mean(exp(t*x))/exp(a*t)
-  return (bound)
-}
-res <- chernoff_bound(8*(10^8), 50)
-res
-```
-
-```{r}
 samples <- colSums(matrix(rpois(n*K, lambda=mu), nrow=n))
 condit <- length(which(samples<8*(10^8)))
 condit
