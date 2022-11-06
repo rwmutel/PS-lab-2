@@ -206,6 +206,8 @@ N_avogadro <- 6*(10^23)
 mass <- id*(10^(-6))
 N <- (mass/atomic_mass)*N_avogadro
 mu <- N * lambda
+cat("Parameter of Poisson distribution:\n")
+mu
 K <- 1e3
 n <- 5
 X <- rpois(n*K, lambda=mu)
@@ -216,8 +218,6 @@ means <- replicate(K, mean(colMeans(matrix(rpois(n*K, lambda=mu), nrow=n))))
 hist(means,
      probability = T,
      breaks = 30,
-    #breaks = seq(0.5,6.6),
-     main = paste(""),
      col = "lightblue",
      xlab = "Means",
      xlim = c(min(means),max(means))
@@ -234,7 +234,7 @@ mu <- mean(means)
 sigma <- sd(means)
 ```
 
-We can now plot ecdf and cdf
+We can now plot ecdf and cdf to compare.
 
 ```{r}
 xlims <- c(mu-3*sigma,mu+3*sigma)
@@ -248,7 +248,7 @@ plot(Fs,
 curve(pnorm(x, mean = mu, sd = sigma), col = "red", lwd = 2, add = TRUE)
 ```
 
-**Next, proceed with all the remaining steps**
+Here we find the maximum difference between the cdf and ecdf for n 5, 10, 50.
 
 ```{r}
 find_max_difference <- function(n) {
@@ -263,13 +263,18 @@ find_max_difference <- function(n) {
 ```
 
 ```{r}
-difference_n1 <- find_max_difference(10)
-difference_n2 <- find_max_difference(50)
-#difference_n3 <- find_max_difference(100)
+difference_n1 <- find_max_difference(5)
+difference_n2 <- find_max_difference(10)
+difference_n3 <- find_max_difference(50)
+cat("The maximum difference between cdf and ecdf for n=5:\n")
 difference_n1
+cat("The maximum difference between cdf and ecdf for n=10:\n")
 difference_n2
-#difference_n3
+cat("The maximum difference between cdf and ecdf for n=50:\n")
+difference_n3
 ```
+
+In general, as n becomes larger, difference between cdf and ecdf should become smaller. After some repetitions of the above differences calculations, it doesn't result in such way. We don't have good estimates of ecdf because any from n = 5, 10, 50 isn't large enough to be most accurate. Anyways, ecdf approximates cdf quite well.
 
 ```{r}
 samples <- colSums(matrix(rpois(n*K, lambda=mu), nrow=n))
@@ -280,7 +285,59 @@ cat("The maximum sum:\n")
 max(samples)
 ```
 
-**Insert your calculations here** $Latex$
+To find theoretical bound for n, we'll use **Markov** and **Chernoff inequalities**, **Central Limit Theorem**.
+
+By Markov inequality,
+
+$$
+P(S{n}>8e8) \leq \frac{1}{8e8}\mu n < .05
+$$
+
+(as we find probability that $S_{n} > 8e8$, so upper bound is 1-.95), $$\Rightarrow$$ (express n from inequality)
+
+$$n < \frac{.05*8e8}{\mu}$$
+
+$\mu$ is the parameter of Poisson distribution, which $$\approx  34672207.6     \Rightarrow$$ n \< 1.15,
+
+which defines the upper bound: n=1.
+
+Next, we'll obtain the upper bound from Chernoff inequality:
+
+$$
+P(\frac{S_{n}-n\mu}{\sigma\sqrt{n}}> \frac{8e8-n\mu}{\sigma\sqrt{n}})\leq e^{-(\frac{8e8-n\mu}{4\sigma\sqrt(n)})^2}
+$$
+
+let's equate it to .05 and find n, $\mu\approx34672207.6$$, $\sigma\approx84.6$ :
+
+$$e^{-(\frac{8e8-n\mu}{4\sigma\sqrt(n)})^2} = .05 \Rightarrow ln(e^{-(\frac{8e8-n\mu}{4\sigma\sqrt(n)})^2}) = ln(.05)$$
+
+![](images/%D0%97%D0%BD%D1%96%D0%BC%D0%BE%D0%BA%20%D0%B5%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202022-11-06%20%D0%BE%2015.39.51.png){width="362"}
+
+![](images/%D0%97%D0%BD%D1%96%D0%BC%D0%BE%D0%BA%20%D0%B5%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202022-11-06%20%D0%BE%2015.41.33.png){width="361"}
+
+![](images/%D0%97%D0%BD%D1%96%D0%BC%D0%BE%D0%BA%20%D0%B5%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202022-11-06%20%D0%BE%2015.38.41.png){width="130"}
+
+Find theoretical bound n using Central Limit Theorem:
+
+By CLT we know that:
+
+$$
+\frac{S_{n}-n\mu}{\sigma\sqrt{n}} \sim N(0, 1)
+$$
+
+Therefore:
+
+$$P(\frac{S_{n}-n\mu}{\sigma\sqrt{n}}< \frac{8e8-n\mu}{\sigma\sqrt{n}}) \rightarrow \phi(\frac{8e8-n\mu}{\sigma\sqrt{n}})\geq .95$$
+
+Using [Standard normal table](https://en.wikipedia.org/wiki/Standard_normal_table), we can derive that $\frac{8e8-n\mu}{\sigma\sqrt{n}} = 1.65$, then:
+
+![![](images/%D0%97%D0%BD%D1%96%D0%BC%D0%BE%D0%BA%20%D0%B5%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202022-11-06%20%D0%BE%2015.56.43.png){width="299"}](images/%D0%97%D0%BD%D1%96%D0%BC%D0%BE%D0%BA%20%D0%B5%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202022-11-06%20%D0%BE%2015.56.27.png){width="299"}
+
+![](images/%D0%97%D0%BD%D1%96%D0%BC%D0%BE%D0%BA%20%D0%B5%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202022-11-06%20%D0%BE%2015.56.48.png){width="137"}
+
+After some calculations, we obtained the theoretical bound n = 23 (from Chernoff inequality and CLT, while Markov proves itself as a poor bound).
+
+Next, you can see that empirical bound is same as theoretical.
 
 ```{r}
 n <- 23
@@ -298,8 +355,6 @@ condit
 cat("The maximum sum:\n")
 max(samples)
 ```
-
-**Do not forget to include several sentences summarizing your work and the conclusions you have made!**
 
 ## Task 3 (Andriy Bilinskiy)
 
