@@ -166,6 +166,7 @@ Which is equal to $\approx 0.024$ for $N=1000$ and $\approx 0.0074$ for $N=10000
 ```{r}
 ident <- decoded!=messages
 ident <- apply(ident, 1, sum)
+ident <- ident[ident!=0]
 hist(x=ident,
      freq=FALSE, 
      main="The Amount of Corrupted Bits",
