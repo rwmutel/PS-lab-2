@@ -198,26 +198,37 @@ Assume that a medical laboratory receives $n$ samples of radioactive element ${{
     -   calculate the number of elements of the sample which are less than critical value ($8 \times 10^8$) and calculate the empirical probability; comment whether it is close to the desired level $0.95$
 
 ```{r}
-lambda <- 1  # change this!
-N <- 100     # change this!
+?rpois
+T <- 30.1
+T_seconds <- T*60*60*24*365
+atomic_mass <- 139
+lambda <- log(2)/(T_seconds)
+N_avogadro <- 6*(10^23)
+mass <- id*(10^(-6))
+N <- (mass/atomic_mass)*N_avogadro
 mu <- N * lambda
 K <- 1e3
 n <- 5
-sample_means <- colMeans(matrix(rpois(n*K, lambda = mu), nrow=n))
+X <- rpois(n*K, lambda=mu)
+# plot(X)
+sample_means <- colMeans(matrix(X, nrow=n))
+
+means <- replicate(K, mean(colMeans(matrix(rpois(n*K, lambda=mu), nrow=n))))
+
 ```
 
 Next, calculate the parameters of the standard normal approximation
 
 ```{r}
-mu <- 0       # change this!
-sigma <- 1    # change this!
+mu <- mean(means)
+sigma <- sd(means)
 ```
 
 We can now plot ecdf and cdf
 
 ```{r}
 xlims <- c(mu-3*sigma,mu+3*sigma)
-Fs <- ecdf(sample_means)
+Fs <- ecdf(means)
 plot(Fs, 
      xlim = xlims, 
      ylim = c(0,1),
@@ -228,6 +239,42 @@ curve(pnorm(x, mean = mu, sd = sigma), col = "red", lwd = 2, add = TRUE)
 ```
 
 **Next, proceed with all the remaining steps**
+
+```{r}
+find_max_difference <- function(n) {
+  means <- replicate(K, mean(colMeans(matrix(rpois(n*K, lambda=mu), nrow=n))))
+  norm_mu <- mean(means)
+  sigma <- sd(means)
+  x <- seq(min(means), max(means),by = .001)
+  difference <- max(abs(ecdf(means)(x)-pnorm(x, mean = norm_mu, sd = sigma)))
+  return (difference)
+}
+```
+
+```{r}
+# difference_n1 <- find_max_difference(10)
+difference_n2 <- find_max_difference(50)
+difference_n3 <- find_max_difference(200)
+# difference_n1
+difference_n2
+difference_n3
+```
+
+```{r}
+samples <- colSums(matrix(rpois(n*K, lambda=mu), nrow=n))
+condit <- length(which(samples<8*(10^8)))
+condit
+```
+
+```{r}
+markov_bound <- function(a) {
+  bound <- mu/a
+  return (bound)
+}
+res <- markov_bound(8*(10^8))
+res
+?ppois
+```
 
 **Do not forget to include several sentences summarizing your work and the conclusions you have made!**
 
