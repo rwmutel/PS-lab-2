@@ -280,7 +280,7 @@ cat("The maximum sum:\n")
 max(samples)
 ```
 
-**Insert your calculations here**
+**Insert your calculations here** $Latex$
 
 ```{r}
 n <- 23
