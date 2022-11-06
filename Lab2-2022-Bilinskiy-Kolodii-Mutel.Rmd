@@ -307,7 +307,7 @@ $$
 P(\frac{S_{n}-n\mu}{\sigma\sqrt{n}}> \frac{8e8-n\mu}{\sigma\sqrt{n}})\leq e^{-(\frac{8e8-n\mu}{4\sigma\sqrt(n)})^2}
 $$
 
-let's equate it to .05 and find n, $\mu\approx34672207.6$$, $\sigma\approx84.6$ :
+let's equate it to .05 and find n, $\mu\approx34672207.6$\$, $\sigma\approx84.6$ :
 
 $$e^{-(\frac{8e8-n\mu}{4\sigma\sqrt(n)})^2} = .05 \Rightarrow ln(e^{-(\frac{8e8-n\mu}{4\sigma\sqrt(n)})^2}) = ln(.05)$$
 
