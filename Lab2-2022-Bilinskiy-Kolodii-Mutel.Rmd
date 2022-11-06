@@ -429,11 +429,11 @@ Chernoff:
 
 Mx(t) for Normal distribution = $e^{t\mu+\frac{1}{2}\sigma^2}t^2$
 
-$$P(S \ge 60) \le min(e^{-60t} \cdot e^{\frac{2100\cdot}{N}+50 \cdot (\frac{ 21}{N})^2 \cdot t \cdot t})$$ for $t > 0$
+$$P(S \ge 60) \le min(e^{-60t} \cdot e^{\frac{2100\cdot t}{N}+50 \cdot (\frac{ 21}{N})^2 \cdot t^2 })$$ for $t > 0$
 
-after mininizing $t = \frac{60*N^{2\cdot(-2100N)}}{2} \cdot 22050$
+after minimizing $t = \frac{60*N^{2\cdot(-2100N)}}{2 \cdot 22050}$
 
-$0.95 \le e^{-60t} \cdot e^{\frac{2100\cdot t}{N}+50\cdot(\frac{21}{N})^2\cdot t\cdot t}$
+$ln0.95 \le e^{-60t} \cdot e^{\frac{2100\cdot t}{N}+50\cdot(\frac{21}{N})^2\cdot t\cdot t}$
 
 after calculations $N \le 36.121$ =\> $N_{max} = 36$
 
@@ -466,7 +466,7 @@ quantile(sample_means2,probs = 0.95)
 
 sample_means are basically pdf of normal distribution with calculated parameters above
 
-The sum of differences in time of 100 clicks in 95% of cases for N=36 = 67 sec that is $>60$. That means that room is safe.
+The sum of differences in time of 100 clicks in 95% of cases for $N=36 = 67 sec$ that is $>60$. That means that room is safe.
 
 ## General summary and conclusions
 
