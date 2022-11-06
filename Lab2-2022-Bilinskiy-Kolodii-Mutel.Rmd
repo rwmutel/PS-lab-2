@@ -418,10 +418,7 @@ max_error(50)
 2.  In terms of S the event of interest is P( S \>= 60 )
 
 ```{r}
-n = 100
-nu2 <- nu1/N
-mu2 <- n*nu2
-sigma2 <- sqrt(n)*nu2
+
 
 ```
 
@@ -441,26 +438,44 @@ Mx(t) for Normal distribution =
 
 ![](images/paste-A8AB398A.png){width="282"}
 
-
-P(S \>= 60) \<= min(e^(-60t)^ \* e^(2100\*t/N\ +\ 50\*(21/N)\^2\ \*\ t\*t)^ ) for t\>0
+P(S \>= 60) \<= min(e^(-60t)^ \* e^(2100\*t/N + 50\*(21/N)\^2 \* t\*t)^ ) for t\>0
 
 after mininizing t = (60N^2^ -2100N)/2\*22050
 
-0.95 \<= e^(-60t)^ \* e^(2100\*t/N\ +\ 50\*(21/N)\^2\ \*\ t\*t)^
+0.95 \<= e^(-60t)^ \* e^(2100\*t/N + 50\*(21/N)\^2 \* t\*t)^
 
 after calculations N \<= 36.121 =\> N max = 36
 
-
-
 ```{r}
-
+N = 36
+n = 100
+nu2 <- nu1/N
+mu2 <- n*nu2
+sigma2 <- sqrt(n)*nu2
+sample_means2 <- colSums(matrix(rexp(n*K, rate = 1/nu2), nrow=n))
 
 ```
 
 ```{r}
-
+xlims <- c(mu2-3*sigma2,mu2+3*sigma2)
+Fs <- ecdf(sample_means2)
+plot(Fs, 
+     xlim = xlims, 
+     col = "blue",
+     lwd = 2,
+     main = "Again checking if Normal is close to sum of exp")
+curve(pnorm(x, mean = mu2, sd = sigma2), col = "red", lwd = 2, add = TRUE)
 
 ```
+
+```{r}
+quantile(sample_means2,probs = 0.95)
+
+```
+
+sample_means are basically pdf of normal distribution with calculated parameters above
+
+The sum of differences in time of 100 clicks in 95% of cases for N=36 = 67 sec that is \>60.That means that room is safe.
 
 **Next, proceed with all the remaining steps**
 
