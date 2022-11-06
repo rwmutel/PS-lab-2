@@ -402,6 +402,8 @@ sigma2 <- sqrt(n)*nu2
 
 ```
 
+According to central limit theorem Sn -\> N(n\*21/N, n\*(21/N)\^2)
+
 Markov : P(S \>= 60) \<= 1/60 \* (100\*21)/N
 
 = P(S \>= 60) \<= 105/3N
@@ -409,6 +411,14 @@ Markov : P(S \>= 60) \<= 1/60 \* (100\*21)/N
 35/N \>= 0,95
 
 N\<= 36,8 =\> N max = 36
+
+Chernoff:
+
+Mx(t) for Normal distribution =
+
+![](images/paste-A8AB398A.png){width="282"}
+
+P(S \>= 60) \<= min(e^(-60s)^ \* e^(2100\*t/N\ +\ 50\*(21/N)\^2\ \*\ t\*t)^ ) for s\>0
 
 ```{r}
 
