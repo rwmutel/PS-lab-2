@@ -427,13 +427,13 @@ $N\le 36,8$ =\> $$N_{max} = 36$$
 
 Chernoff:
 
-Mx(t) for Normal distribution = $e^{t\mu+\frac{1}{2}\sigma^2}t^2$
+Mx(t) for Normal distribution = $e^{t\mu+\frac{1}{2}\sigma^2+t^2}$
 
 $$P(S \ge 60) \le min(e^{-60t} \cdot e^{\frac{2100\cdot t}{N}+50 \cdot (\frac{ 21}{N})^2 \cdot t^2 })$$ for $t > 0$
 
 after minimizing $t = \frac{60*N^{2\cdot(-2100N)}}{2 \cdot 22050}$
 
-$ln0.95 \le e^{-60t} \cdot e^{\frac{2100\cdot t}{N}+50\cdot(\frac{21}{N})^2\cdot t\cdot t}$
+$ln0.95 \le e^{-60t} \cdot e^{\frac{2100\cdot t}{N}+50\cdot(\frac{21}{N})^2\cdot t^2}$
 
 after calculations $N \le 36.121$ =\> $N_{max} = 36$
 
