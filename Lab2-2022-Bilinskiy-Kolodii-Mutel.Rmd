@@ -212,7 +212,19 @@ X <- rpois(n*K, lambda=mu)
 sample_means <- colMeans(matrix(X, nrow=n))
 
 means <- replicate(K, mean(colMeans(matrix(rpois(n*K, lambda=mu), nrow=n))))
-hist(means, freq=FALSE)
+
+hist(means,
+     probability = T,
+     breaks = 30,
+    #breaks = seq(0.5,6.6),
+     main = paste(""),
+     col = "lightblue",
+     xlab = "Means",
+     xlim = c(min(means),max(means))
+     )
+# superimpose normal distribution
+x <- seq(min(means),max(means), by = .01)
+lines(x, dnorm(x, mean = mean(means), sd = sd(means)), col ="red", lwd = 2)
 ```
 
 Next, calculate the parameters of the standard normal approximation
@@ -429,7 +441,7 @@ Mx(t) for Normal distribution =
 
 ![](images/paste-A8AB398A.png){width="282"}
 
-P(S \>= 60) \<= min(e^(-60s)^ \* e^(2100\*t/N\ +\ 50\*(21/N)\^2\ \*\ t\*t)^ ) for s\>0
+P(S \>= 60) \<= min(e^(-60s)^ \* e^(2100\*t/N + 50\*(21/N)\^2 \* t\*t)^ ) for s\>0
 
 ```{r}
 
