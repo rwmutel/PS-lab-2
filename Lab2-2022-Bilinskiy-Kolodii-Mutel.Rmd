@@ -344,6 +344,34 @@ max_error(50)
 
 ```
 
+2.  In terms of S the event of interest is P( S \>= 60 )
+
+```{r}
+n = 100
+nu2 <- nu1/N
+mu2 <- n*nu2
+sigma2 <- sqrt(n)*nu2
+
+```
+
+Markov : P(S \>= 60) \<= 1/60 \* (100\*21)/N
+
+= P(S \>= 60) \<= 105/3N
+
+35/N \>= 0,95
+
+N\<= 36,8 =\> N max = 36
+
+```{r}
+
+
+```
+
+```{r}
+
+
+```
+
 **Next, proceed with all the remaining steps**
 
 **Do not forget to include several sentences summarizing your work and the conclusions you have made!**
